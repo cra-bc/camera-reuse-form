@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お申込情報登録 | 中古カメラリユース事業 実践サポート</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      line-height: 1.7;
+      padding: 0;
+    }
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a3a5c;
+      margin-bottom: 4px;
+    }
+    .header .subtitle {
+      font-size: 13px;
+      color: #666;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 24px 20px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a3a5c;
+      border-left: 4px solid #4a86c8;
+      padding-left: 10px;
+      margin-bottom: 16px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 6px;
+    }
+    .form-group label .required {
+      color: #e53935;
+      font-size: 12px;
+      margin-left: 4px;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"],
+    .form-group input[type="date"] {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 16px;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      background: #fafafa;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #4a86c8;
+      background: #fff;
+    }
+    .postal-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .postal-row input { flex: 1; }
+    .btn-address-search {
+      padding: 10px 14px;
+      font-size: 13px;
+      background: #4a86c8;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .btn-address-search:hover { background: #3a6fa8; }
+    .btn-address-search:disabled { background: #aaa; cursor: not-allowed; }
+
+    .checkbox-group { margin-bottom: 18px; }
+    .checkbox-group .legal-text {
+      font-size: 12px;
+      color: #555;
+      background: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      line-height: 1.8;
+    }
+    .checkbox-group label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: #4a86c8;
+    }
+
+    .footer-notice {
+      font-size: 11px;
+      color: #777;
+      background: #fafafa;
+      border: 1px solid #e8e8e8;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 20px;
+      line-height: 1.9;
+    }
+    .footer-notice strong { color: #555; }
+
+    .error-box {
+      background: #fdecea;
+      border: 1px solid #f5c6cb;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #c62828;
+      display: none;
+    }
+    .error-box ul { margin: 4px 0 0 16px; }
+
+    .btn-submit {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      background: #4a86c8;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover { background: #3a6fa8; }
+    .btn-submit:disabled { background: #aab; cursor: not-allowed; }
+    .loading-text {
+      text-align: center;
+      font-size: 13px;
+      color: #666;
+      margin-top: 8px;
+      display: none;
+    }
+
+    /* ===== サンクスページ ===== */
+    .thanks-page { display: none; }
+    .thanks-page .card { text-align: center; }
+    .thanks-page .icon { font-size: 48px; margin-bottom: 12px; }
+    .thanks-page h1 { font-size: 22px; color: #1a3a5c; margin-bottom: 4px; }
+    .thanks-page .service-name { font-size: 14px; color: #666; margin-top: 4px; }
+    .thanks-page .app-id {
+      display: inline-block;
+      background: #e8f0fe;
+      color: #1a3a5c;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 6px;
+      margin: 12px 0;
+    }
+    .thanks-page .message {
+      font-size: 14px;
+      color: #555;
+      text-align: left;
+      margin-top: 20px;
+      line-height: 2;
+    }
+    .thanks-page .message ul { margin: 8px 0 8px 20px; }
+    .thanks-page .message li { margin-bottom: 4px; }
+    .thanks-page .contact-info {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #eee;
+      font-size: 13px;
+      color: #777;
+    }
+    .thanks-page .contact-info a { color: #4a86c8; text-decoration: none; }
+
+    @media (max-width: 480px) {
+      .container { padding: 12px 10px 30px; }
+      .card { padding: 18px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== 申込フォーム ===== -->
+<div class="container" id="formPage">
+  <div class="header">
+    <h1>お申込情報登録</h1>
+    <p class="subtitle">中古カメラリユース事業 実践サポート</p>
+  </div>
+
+  <form id="applicationForm">
+    <div class="card">
+      <div class="section-title">お申込情報</div>
+
+      <div class="form-group">
+        <label>申込日（契約締結日）<span class="required">必須</span></label>
+        <input type="date" name="applicationDate" id="applicationDate" required>
+      </div>
+
+      <div class="form-group">
+        <label>氏名<span class="required">必須</span></label>
+        <input type="text" name="customerName" id="customerName" placeholder="山田太郎" required>
+      </div>
+
+      <div class="form-group">
+        <label>郵便番号<span class="required">必須</span></label>
+        <div class="postal-row">
+          <input type="text" name="postalCode" id="postalCode" placeholder="123-4567"
+                 inputmode="numeric" maxlength="8" required>
+          <button type="button" class="btn-address-search" id="btnAddressSearch"
+                  onclick="searchAddress()">住所検索</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>住所<span class="required">必須</span></label>
+        <input type="text" name="address" id="address" placeholder="東京都千代田区..." required>
+      </div>
+
+      <div class="form-group">
+        <label>メールアドレス<span class="required">必須</span></label>
+        <input type="email" name="email" id="email" placeholder="example@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label>電話番号<span class="required">必須</span></label>
+        <input type="tel" name="phone" id="phone" placeholder="09012345678"
+               inputmode="tel" maxlength="15" required>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">確認事項</div>
+
+      <div class="checkbox-group">
+        <div class="legal-text">
+          以下の内容を確認してください。<br>
+          ・本サービスは中古カメラのリユース販売を学び実践するサポートプログラムです。<br>
+          ・申込日が契約締結日となります。<br>
+          ・紙の契約書は後日レターパックにて発送いたします。届きましたら内容をご確認のうえ、署名・押印のうえ1通をご返送ください。<br>
+          ・ご不明な点がございましたら、お気軽にお問い合わせください。
+        </div>
+        <label>
+          <input type="checkbox" name="confirmNotice" id="confirmNotice">
+          <span>上記の注意事項を確認しました<span class="required">必須</span></span>
+        </label>
+      </div>
+
+      <div class="checkbox-group">
+        <div class="legal-text">
+          ご提供いただいた個人情報は、以下の目的に限り利用し、適切に管理いたします。<br>
+          ・契約書の作成および送付<br>
+          ・ご本人確認およびご連絡<br>
+          ・契約管理<br>
+          法令に基づく場合を除き、ご本人の同意なく第三者に提供することはありません。
+        </div>
+        <label>
+          <input type="checkbox" name="confirmPrivacy" id="confirmPrivacy">
+          <span>個人情報の取り扱いに同意します<span class="required">必須</span></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="footer-notice">
+      <strong>【クーリング・オフについて】</strong><br>
+      特定商取引法に基づき、法定書面（契約書）を受領した日から起算して8日間は、書面によりクーリング・オフ（契約の解除）が可能です。
+      詳細は契約書第6条をご参照ください。<br><br>
+      <strong>【お問い合わせ】</strong><br>
+      合同会社アイリス<br>
+      メール: support@iris-llc.net / 電話: 070-9058-1845
+    </div>
+
+    <div class="error-box" id="clientErrors"></div>
+
+    <button type="submit" class="btn-submit" id="btnSubmit">
+      申込情報を登録する
+    </button>
+    <p class="loading-text" id="loadingText">送信中です。しばらくお待ちください...</p>
+  </form>
+</div>
+
+<!-- ===== サンクスページ ===== -->
+<div class="container thanks-page" id="thanksPage">
+  <div class="card">
+    <div class="icon">&#x2705;</div>
+    <h1>お申込情報の登録が完了しました</h1>
+    <p class="service-name">中古カメラリユース事業 実践サポート</p>
+
+    <div class="app-id">受付番号: <span id="thanksAppId"></span></div>
+
+    <div class="message">
+      <p><strong><span id="thanksName"></span></strong> 様</p>
+      <p>お申込ありがとうございます。ご入力いただいたメールアドレス宛に確認メールを送信しました。</p>
+
+      <p style="margin-top: 16px;"><strong>今後の流れ:</strong></p>
+      <ul>
+        <li>契約書を<strong>2日以内を目安</strong>にレターパックにて発送いたします。</li>
+        <li>届きましたら内容をご確認のうえ、<strong>署名・押印</strong>のうえ<strong>1通をご返送</strong>ください。</li>
+        <li>返送用のレターパックを同封しています。</li>
+      </ul>
+
+      <p style="margin-top: 12px;">ご不明な点がございましたら、お気軽にお問い合わせください。</p>
+    </div>
+
+    <div class="contact-info">
+      合同会社アイリス<br>
+      <a href="mailto:support@iris-llc.net">support@iris-llc.net</a> / 070-9058-1845
+    </div>
+  </div>
+</div>
+
+<script>
+// ==============================================
+// 設定: GAS Web App の URL をここに設定
+// ==============================================
+var API_URL = 'https://script.google.com/macros/s/AKfycbxVKlijVMo-gDB1gE3ZnVa69PZQFBmhVFlt29dfEd7c3QwbVsGFHkT9eqaYZyOWkAXl2w/exec';
+
+// 本日の日付をデフォルトに設定（JST）
+(function() {
+  var dateInput = document.getElementById('applicationDate');
+  var now = new Date();
+  var jst = new Date(now.getTime() + 9 * 3600000);
+  dateInput.value = jst.toISOString().split('T')[0];
+})();
+
+// 全角→半角変換
+function toHalfWidth(str) {
+  return str
+    .replace(/[０-９]/g, function(s) { return String.fromCharCode(s.charCodeAt(0) - 0xFEE0); })
+    .replace(/[ー−―‐]/g, '-')
+    .replace(/　/g, ' ');
+}
+
+// 郵便番号: 全角→半角 + ハイフン自動挿入
+document.getElementById('postalCode').addEventListener('input', function(e) {
+  var v = toHalfWidth(this.value).replace(/[^0-9-]/g, '');
+  if (v.length === 3 && !v.includes('-') && e.inputType !== 'deleteContentBackward') {
+    v = v + '-';
+  }
+  var digits = v.replace(/-/g, '');
+  if (digits.length >= 7) {
+    v = digits.substring(0, 3) + '-' + digits.substring(3, 7);
+  }
+  this.value = v;
+});
+
+// 電話番号: 全角→半角
+document.getElementById('phone').addEventListener('input', function() {
+  this.value = toHalfWidth(this.value).replace(/[^0-9-]/g, '');
+});
+
+// 住所検索（zipcloud API / JSONP）
+function searchAddress() {
+  var postalCode = document.getElementById('postalCode').value.replace(/-/g, '');
+  if (postalCode.length !== 7) {
+    alert('郵便番号を正しく入力してください。');
+    return;
+  }
+  var btn = document.getElementById('btnAddressSearch');
+  btn.disabled = true;
+  btn.textContent = '検索中...';
+
+  var callbackName = 'zipCallback_' + Date.now();
+  window[callbackName] = function(data) {
+    btn.disabled = false;
+    btn.textContent = '住所検索';
+    if (data.results && data.results.length > 0) {
+      var r = data.results[0];
+      document.getElementById('address').value = r.address1 + r.address2 + r.address3;
+      document.getElementById('address').focus();
+    } else {
+      alert('該当する住所が見つかりませんでした。');
+    }
+    delete window[callbackName];
+    document.head.removeChild(script);
+  };
+  var script = document.createElement('script');
+  script.src = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=' + postalCode + '&callback=' + callbackName;
+  script.onerror = function() {
+    btn.disabled = false;
+    btn.textContent = '住所検索';
+    alert('住所検索に失敗しました。手動で入力してください。');
+    delete window[callbackName];
+    document.head.removeChild(script);
+  };
+  document.head.appendChild(script);
+}
+
+// フォーム送信
+document.getElementById('applicationForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  // クライアント側バリデーション
+  var errors = [];
+  if (!document.getElementById('applicationDate').value) errors.push('申込日を入力してください。');
+  if (!document.getElementById('customerName').value.trim()) errors.push('氏名を入力してください。');
+  var postal = document.getElementById('postalCode').value.replace(/[^0-9]/g, '');
+  if (postal.length !== 7) errors.push('郵便番号は7桁で入力してください。');
+  if (!document.getElementById('address').value.trim()) errors.push('住所を入力してください。');
+  var emailVal = document.getElementById('email').value.trim();
+  if (!emailVal) errors.push('メールアドレスを入力してください。');
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) errors.push('メールアドレスの形式が正しくありません。');
+  if (!document.getElementById('phone').value.trim()) errors.push('電話番号を入力してください。');
+  if (!document.getElementById('confirmNotice').checked) errors.push('注意事項の確認にチェックを入れてください。');
+  if (!document.getElementById('confirmPrivacy').checked) errors.push('個人情報の取り扱いに同意してください。');
+
+  var errorBox = document.getElementById('clientErrors');
+  if (errors.length > 0) {
+    errorBox.innerHTML = '<strong>入力内容をご確認ください:</strong><ul>' +
+      errors.map(function(msg) { return '<li>' + msg + '</li>'; }).join('') + '</ul>';
+    errorBox.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  // 送信中の状態
+  errorBox.style.display = 'none';
+  document.getElementById('btnSubmit').disabled = true;
+  document.getElementById('loadingText').style.display = 'block';
+
+  // リクエストデータ
+  var payload = {
+    applicationDate: document.getElementById('applicationDate').value,
+    customerName: document.getElementById('customerName').value.trim(),
+    postalCode: document.getElementById('postalCode').value,
+    address: document.getElementById('address').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    confirmNotice: document.getElementById('confirmNotice').checked,
+    confirmPrivacy: document.getElementById('confirmPrivacy').checked,
+  };
+
+  // GAS API に送信
+  // Content-Type を text/plain にしてCORSプリフライトを回避
+  fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload),
+    redirect: 'follow',
+  })
+  .then(function(response) { return response.json(); })
+  .then(function(data) {
+    if (data.success) {
+      // サンクスページを表示
+      document.getElementById('thanksName').textContent = payload.customerName;
+      document.getElementById('thanksAppId').textContent = data.applicationId;
+      document.getElementById('formPage').style.display = 'none';
+      document.getElementById('thanksPage').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // サーバー側バリデーションエラー
+      var msgs = data.errors || ['送信に失敗しました。'];
+      errorBox.innerHTML = '<strong>エラー:</strong><ul>' +
+        msgs.map(function(msg) { return '<li>' + msg + '</li>'; }).join('') + '</ul>';
+      errorBox.style.display = 'block';
+      document.getElementById('btnSubmit').disabled = false;
+      document.getElementById('loadingText').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  })
+  .catch(function(err) {
+    errorBox.innerHTML = '<strong>通信エラー:</strong><p>サーバーに接続できませんでした。しばらくしてからお試しください。</p>';
+    errorBox.style.display = 'block';
+    document.getElementById('btnSubmit').disabled = false;
+    document.getElementById('loadingText').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+</script>
+
+</body>
+</html>
