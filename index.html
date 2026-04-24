@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
   <title>お申込情報登録 | 中古カメラリユース事業 実践サポート</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -270,20 +271,6 @@
 
       <div class="checkbox-group">
         <div class="legal-text">
-          以下の内容を確認してください。<br>
-          ・本サービスは中古カメラのリユース販売を学び実践するサポートプログラムです。<br>
-          ・申込日が契約締結日となります。<br>
-          ・紙の契約書は後日レターパックにて発送いたします。届きましたら内容をご確認のうえ、署名・押印のうえ1通をご返送ください。<br>
-          ・ご不明な点がございましたら、お気軽にお問い合わせください。
-        </div>
-        <label>
-          <input type="checkbox" name="confirmNotice" id="confirmNotice">
-          <span>上記の注意事項を確認しました<span class="required">（必須）</span></span>
-        </label>
-      </div>
-
-      <div class="checkbox-group">
-        <div class="legal-text">
           ご提供いただいた個人情報は、以下の目的に限り利用し、適切に管理いたします。<br>
           ・契約書の作成および送付<br>
           ・ご本人確認およびご連絡<br>
@@ -300,7 +287,7 @@
     <div class="footer-notice">
       <strong>【お問い合わせ】</strong><br>
       株式会社ブルーケープ<br>
-      メール: support@bluecape.co.jp / 電話: 070-9058-1845
+      メール: support@bluecape.co.jp / TEL: <span style="pointer-events:none;color:inherit;text-decoration:none;">050-3176-1701</span>
     </div>
 
     <div class="error-box" id="clientErrors"></div>
@@ -434,7 +421,6 @@ document.getElementById('applicationForm').addEventListener('submit', function(e
   if (!emailVal) errors.push('メールアドレスを入力してください。');
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) errors.push('メールアドレスの形式が正しくありません。');
   if (!document.getElementById('phone').value.trim()) errors.push('電話番号を入力してください。');
-  if (!document.getElementById('confirmNotice').checked) errors.push('注意事項の確認にチェックを入れてください。');
   if (!document.getElementById('confirmPrivacy').checked) errors.push('個人情報の取り扱いに同意してください。');
 
   var errorBox = document.getElementById('clientErrors');
@@ -459,7 +445,6 @@ document.getElementById('applicationForm').addEventListener('submit', function(e
     address: document.getElementById('address').value.trim(),
     email: document.getElementById('email').value.trim(),
     phone: document.getElementById('phone').value.trim(),
-    confirmNotice: document.getElementById('confirmNotice').checked,
     confirmPrivacy: document.getElementById('confirmPrivacy').checked,
   };
 
