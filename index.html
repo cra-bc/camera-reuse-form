@@ -234,7 +234,7 @@
       font-size: 13px;
       color: #777;
     }
-    .thanks-page .contact-info a { color: #4a86c8; text-decoration: none; }
+    .thanks-page .contact-info { color: #777; }
 
     @media (max-width: 480px) {
       .container { padding: 12px 10px 30px; }
@@ -327,7 +327,7 @@
 <!-- 送信中オーバーレイ -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
-  <div class="loading-msg">送信中ですので10秒ほどお待ちください</div>
+  <div class="loading-msg">送信中ですので20秒ほどお待ちください</div>
 </div>
 
 <!-- ===== サンクスページ ===== -->
@@ -355,7 +355,7 @@
 
     <div class="contact-info">
       株式会社ブルーケープ<br>
-      support@bluecape.co.jp / TEL: <span style="pointer-events:none;">050-3176-1701</span>
+      <span style="color:#777;">support@bluecape.co.jp</span> / TEL: <span style="pointer-events:none;">050-3176-1701</span>
     </div>
   </div>
 </div>
@@ -490,7 +490,8 @@ document.getElementById('applicationForm').addEventListener('submit', function(e
   .then(function(response) { return response.json(); })
   .then(function(data) {
     if (data.success) {
-      // サンクスページを表示
+      // オーバーレイを消してサンクスページを表示
+      document.getElementById('loadingOverlay').classList.remove('active');
       document.getElementById('thanksName').textContent = payload.customerName;
       document.getElementById('thanksAppId').textContent = data.applicationId;
       document.getElementById('formPage').style.display = 'none';
